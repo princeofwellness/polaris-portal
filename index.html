@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POLARIS Portal</title>
+<title>POLARIS — Dr.T</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap');
-
 :root {
   --void: #05050a;
   --abyss: #080812;
   --surface: rgba(255,255,255,0.02);
-  --border: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.05);
   --text: #e0e0ec;
   --text-dim: #6a6a80;
   --cyan: #00e5ff;
@@ -19,159 +17,263 @@
   --lime: #76ff03;
   --amber: #ff9100;
   --violet: #b388ff;
+  --cyan-dim: rgba(0,229,255,0.08);
+  --magenta-dim: rgba(255,45,149,0.08);
+  --lime-dim: rgba(118,255,3,0.06);
+  --amber-dim: rgba(255,145,0,0.08);
+  --radius: 0px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;700&display=swap');
+
 body {
   background: var(--void);
   color: var(--text);
   font-family: 'Space Grotesk', -apple-system, sans-serif;
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-  overflow-x: hidden;
+  line-height: 1.65;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
 }
-body::before {
-  content: ''; position: fixed; top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background:
-    radial-gradient(circle at 20% 80%, rgba(0,229,255,0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,45,149,0.03) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(118,255,3,0.02) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
+.container { max-width: 820px; margin:0 auto; padding: 50px 20px 100px; }
 
-.container {
-  max-width: 520px; width: 100%; padding: 50px 24px;
-  position: relative; z-index: 1;
+/* HEADER */
+.portal-header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 50px 0 40px;
+  border-bottom: 2px solid var(--border);
+  position: relative;
 }
-
-.header { text-align:center; margin-bottom: 44px; }
-.glyph {
-  font-size: 56px; letter-spacing: 12px; margin-bottom: 16px;
+.portal-header::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+}
+.portal-glyph {
+  font-size: 52px; letter-spacing: 10px; margin-bottom: 16px;
   background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--lime), var(--amber));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  animation: hueSpin 8s ease infinite;
+  animation: hueShift 8s ease infinite;
 }
-@keyframes hueSpin {
+@keyframes hueShift {
   0%,100% { filter: hue-rotate(0deg); }
-  50% { filter: hue-rotate(45deg); }
+  50% { filter: hue-rotate(30deg); }
 }
-.header h1 {
-  font-size: 24px; font-weight: 300; letter-spacing: 8px;
+.portal-header h1 {
+  font-size: 22px; font-weight: 400; letter-spacing: 6px;
   text-transform: uppercase; margin-bottom: 8px;
 }
-.header .tagline {
+.portal-header .subtitle {
   font-size: 11px; color: var(--text-dim); letter-spacing: 3px;
 }
-
-.system-strip {
-  display: flex; justify-content: center; gap: 8px; margin: 24px 0 36px; flex-wrap: wrap;
+.system-badges {
+  display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap;
 }
-.strip-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+.badge {
+  padding: 4px 14px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  border: 1px solid; font-weight: 500;
 }
-.strip-dot:nth-child(1) { background: var(--cyan); }
-.strip-dot:nth-child(2) { background: var(--violet); }
-.strip-dot:nth-child(3) { background: var(--lime); }
-.strip-dot:nth-child(4) { background: var(--amber); }
+.badge-astro { color: var(--cyan); border-color: var(--cyan); }
+.badge-hd { color: var(--violet); border-color: var(--violet); }
+.badge-num { color: var(--lime); border-color: var(--lime); }
+.badge-cz { color: var(--amber); border-color: var(--amber); }
 
-form { display:flex; flex-direction:column; gap:13px; }
-label {
+/* SYSTEM SECTIONS */
+.system-section { margin-bottom: 40px; }
+.system-section h2 {
+  font-size: 11px; font-weight: 400; letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 20px; padding: 0 0 6px 0;
+  border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
+}
+h2::before { content: ''; width: 8px; height: 8px; display: inline-block; }
+h2.astro { color: var(--cyan); } h2.astro::before { background: var(--cyan); }
+h2.hd { color: var(--violet); } h2.hd::before { background: var(--violet); }
+h2.num { color: var(--lime); } h2.num::before { background: var(--lime); }
+h2.cz { color: var(--amber); } h2.cz::before { background: var(--amber); }
+
+/* CARDS */
+.card {
+  padding: 18px 22px; margin: 10px 0;
+  border: 1px solid var(--border); background: var(--surface);
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px;
+}
+.card-astro::before { background: var(--cyan); }
+.card-hd::before { background: var(--violet); }
+.card-num::before { background: var(--lime); }
+.card-cz::before { background: var(--amber); }
+
+.card-label {
   font-size: 9px; text-transform: uppercase; letter-spacing: 3px;
-  color: var(--text-dim); font-weight: 500;
+  margin-bottom: 10px; font-weight: 500;
 }
-input {
-  padding: 14px 16px; background: var(--abyss);
-  border: 1px solid var(--border); color: var(--text);
-  font-size: 14px; font-family: 'Space Grotesk', sans-serif;
-  outline: none; transition: all 0.25s;
-}
-input:focus { border-color: var(--cyan); box-shadow: 0 0 0 1px rgba(0,229,255,0.15); }
-.row { display:flex; gap:10px; }
-.row input { flex:1; }
+.card-astro .card-label { color: var(--cyan); }
+.card-hd .card-label { color: var(--violet); }
+.card-num .card-label { color: var(--lime); }
+.card-cz .card-label { color: var(--amber); }
 
-button {
-  padding: 16px; margin-top: 12px;
-  background: transparent; border: 2px solid var(--cyan);
-  color: var(--cyan); font-size: 13px; font-weight: 500;
-  letter-spacing: 4px; text-transform: uppercase;
-  cursor: pointer; font-family: 'Space Grotesk', sans-serif;
-  transition: all 0.3s; position: relative; overflow: hidden;
-}
-button:hover {
-  background: var(--cyan); color: var(--void);
-  box-shadow: 0 0 30px rgba(0,229,255,0.25);
-}
-button::after {
-  content: ''; position: absolute; top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  transition: left 0.5s;
-}
-button:hover::after { left: 100%; }
+/* TABLES */
+table { width:100%; border-collapse:collapse; font-size:12px; font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+td:first-child { color: var(--text-dim); width: 80px; }
+td:nth-child(2) { font-weight: 500; }
+.planet-name { color: var(--cyan); }
 
-.footer {
-  text-align: center; margin-top: 40px;
-  font-size: 9px; color: rgba(255,255,255,0.12); letter-spacing: 2px;
+/* NUMEROLOGY GRID */
+.num-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px; text-align: center;
+}
+.num-card {
+  padding: 18px 12px; border: 1px solid var(--border);
+  background: var(--lime-dim); position: relative;
+}
+.num-value {
+  font-size: 42px; font-weight: 300; color: var(--lime);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: -2px;
+}
+.num-label { font-size: 8px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-top: 2px; }
+.num-desc { font-size: 9px; color: var(--text-dim); margin-top: 6px; line-height: 1.4; }
+
+/* ASPECTS */
+.aspect-list { font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+.aspect-item { padding: 2px 0; color: var(--text-dim); }
+.asp-sym { margin-right: 6px; font-size: 13px; }
+.asp-orb { color: var(--magenta); font-size: 10px; }
+
+/* GATES */
+.gate-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+.gate-chip {
+  padding: 4px 10px; border: 1px solid rgba(179,136,255,0.2);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  background: rgba(179,136,255,0.04);
+}
+.gate-num { color: var(--violet); }
+.gate-line { color: var(--text-dim); }
+
+/* CHINESE ZODIAC */
+.cz-hero { text-align: center; padding: 30px 0; }
+.cz-animal-name { font-size: 48px; font-weight: 300; color: var(--amber); letter-spacing: 4px; }
+.cz-element-tag {
+  display: inline-block; padding: 3px 12px; border: 1px solid var(--amber);
+  font-size: 10px; color: var(--amber); letter-spacing: 2px; margin-top: 8px;
+}
+.pillar-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; }
+.pillar-cell {
+  padding: 14px 8px; border: 1px solid rgba(255,145,0,0.15);
+  background: rgba(255,145,0,0.03);
+}
+.pillar-cell .p-label { font-size: 8px; text-transform: uppercase; letter-spacing: 2px; color: var(--amber); margin-bottom: 6px; }
+.pillar-cell .p-stem { font-size: 18px; color: var(--text); font-weight: 300; }
+.pillar-cell .p-elem { font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+
+.element-bars { margin-top: 14px; }
+.elem-bar { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-size: 10px; font-family: 'JetBrains Mono', monospace; }
+.elem-bar .e-name { width: 40px; color: var(--text-dim); text-align: right; }
+.elem-bar .e-fill { height: 6px; background: var(--amber); transition: width 0.3s; }
+.elem-bar .e-count { color: var(--amber); width: 20px; }
+
+/* FOOTER */
+.portal-footer {
+  margin-top: 60px; padding-top: 30px; border-top: 2px solid var(--border);
+  text-align: center; font-size: 9px; color: var(--text-dim); letter-spacing: 2px;
   line-height: 2;
 }
 
-/* Pulse ring */
-.pulse-ring {
-  position: fixed; bottom: 30px; right: 30px;
-  width: 40px; height: 40px; border: 2px solid var(--cyan);
-  border-radius: 50%; animation: pulse 2s ease-out infinite; z-index: 0;
-  opacity: 0.3;
-}
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 0.3; }
-  100% { transform: scale(3); opacity: 0; }
-}
+/* ELEMENTS STYLING */
+.elem-fire { color: #ff5252; } .elem-earth { color: #8d6e63; }
+.elem-air { color: var(--cyan); } .elem-water { color: #448aff; }
+
+.mono { font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body>
 <div class="container">
-<header class="header">
-  <div class="glyph">◈</div>
-  <h1>POLARIS</h1>
-  <div class="tagline">FOUR ANCIENT SYSTEMS · ONE LIVING MIRROR</div>
-  <div class="system-strip">
-    <div class="strip-dot"></div><div class="strip-dot"></div>
-    <div class="strip-dot"></div><div class="strip-dot"></div>
+
+<header class="portal-header">
+  <div class="portal-glyph">◈</div>
+  <h1>Dr.T</h1>
+  <div class="subtitle">Pisces Sun · Cancer Moon · Gemini Rising</div>
+  <div class="system-badges">
+    <span class="badge badge-astro">Astrology</span>
+    <span class="badge badge-hd">Human Design</span>
+    <span class="badge badge-num">Numerology</span>
+    <span class="badge badge-cz">Chinese Zodiac</span>
   </div>
 </header>
 
-<form method="POST" action="/generate">
-  <label>Full Birth Name</label>
-  <input name="name" placeholder="Your full birth name" required autofocus>
-
-  <label>Birth Date</label>
-  <input name="date" type="date" required>
-
-  <label>Birth Time</label>
-  <input name="time" type="time" required>
-
-  <div class="row">
-    <div style="flex:1">
-      <label>Latitude</label>
-      <input name="lat" placeholder="48.1486" value="48.1486">
-    </div>
-    <div style="flex:1">
-      <label>Longitude</label>
-      <input name="lon" placeholder="17.1077" value="17.1077">
-    </div>
+<!-- ASTROLOGY -->
+<section class="system-section">
+  <h2 class="astro">Astrology</h2>
+  <div class="card card-astro">
+    <div class="card-label">Planetary Positions</div>
+    <table><tr><td class="planet-name">SUN</td><td>Pisces 0°48'</td><td>House 10</td></tr><tr><td class="planet-name">MOON</td><td>Cancer 28°08'</td><td>House 3</td></tr><tr><td class="planet-name">MERCURY</td><td>Aquarius 15°27'</td><td>House 9</td></tr><tr><td class="planet-name">VENUS</td><td>Aquarius 20°19'</td><td>House 10</td></tr><tr><td class="planet-name">MARS</td><td>Libra 4°46'</td><td>House 5</td></tr><tr><td class="planet-name">JUPITER</td><td>Aquarius 6°41'</td><td>House 9</td></tr><tr><td class="planet-name">SATURN</td><td>Aries 5°29'</td><td>House 11</td></tr><tr><td class="planet-name">URANUS</td><td>Aquarius 6°06'</td><td>House 9</td></tr><tr><td class="planet-name">NEPTUNE</td><td>Capricorn 28°39'</td><td>House 9</td></tr><tr><td class="planet-name">PLUTO</td><td>Sagittarius 5°31'</td><td>House 6</td></tr></table>
   </div>
+  <div class="card card-astro">
+    <div class="card-label">House Cusps · Placidus</div>
+    <table><tr><td>House 1 ASC</td><td>Gemini 18°12'</td></tr><tr><td>House 2</td><td>Cancer 7°26'</td></tr><tr><td>House 3</td><td>Cancer 25°31'</td></tr><tr><td>House 4 IC</td><td>Leo 16°33'</td></tr><tr><td>House 5</td><td>Virgo 15°47'</td></tr><tr><td>House 6</td><td>Libra 29°45'</td></tr><tr><td>House 7 DSC</td><td>Sagittarius 18°12'</td></tr><tr><td>House 8</td><td>Capricorn 7°26'</td></tr><tr><td>House 9</td><td>Capricorn 25°31'</td></tr><tr><td>House 10 MC</td><td>Aquarius 16°33'</td></tr><tr><td>House 11</td><td>Pisces 15°47'</td></tr><tr><td>House 12</td><td>Aries 29°45'</td></tr></table>
+  </div>
+  <div class="card card-astro">
+    <div class="card-label">Elements · Modalities</div>
+    <p style="font-size:13px;"><span class="elem-fire">Fire: 2</span> <span class="elem-earth">Earth: 1</span> <span class="elem-air">Air: 5</span> <span class="elem-water">Water: 2</span></p>
+    <p style="font-size:11px; color:var(--text-dim); margin-top:6px;">Dominant: <strong style="color:var(--text);">Air</strong> · Cardinal</p>
+  </div>
+  <div class="card card-astro">
+    <div class="card-label">Key Aspects</div>
+    <div class="aspect-list"><div class="aspect-item"><span class="asp-sym">☌</span> JUPITER — URANUS <span class="asp-orb">0.57°</span></div><div class="aspect-item"><span class="asp-sym">☌</span> MARS — NORTH_NODE <span class="asp-orb">4.33°</span></div><div class="aspect-item"><span class="asp-sym">☌</span> MERCURY — VENUS <span class="asp-orb">4.87°</span></div><div class="aspect-item"><span class="asp-sym">☌</span> SATURN — SOUTH_NODE <span class="asp-orb">5.05°</span></div><div class="aspect-item"><span class="asp-sym">☌</span> URANUS — NEPTUNE <span class="asp-orb">7.46°</span></div><div class="aspect-item"><span class="asp-sym">☍</span> NORTH_NODE — SOUTH_NODE <span class="asp-orb">0.00°</span></div><div class="aspect-item"><span class="asp-sym">☍</span> MOON — NEPTUNE <span class="asp-orb">0.51°</span></div><div class="aspect-item"><span class="asp-sym">☍</span> MARS — SATURN <span class="asp-orb">0.72°</span></div><div class="aspect-item"><span class="asp-sym">☍</span> MARS — SOUTH_NODE <span class="asp-orb">4.33°</span></div><div class="aspect-item"><span class="asp-sym">☍</span> SATURN — NORTH_NODE <span class="asp-orb">5.05°</span></div><div class="aspect-item"><span class="asp-sym">☍</span> MOON — URANUS <span class="asp-orb">7.97°</span></div><div class="aspect-item"><span class="asp-sym">△</span> SATURN — PLUTO <span class="asp-orb">0.02°</span></div></div>
+  </div>
+</section>
 
-  <label>Timezone (UTC offset, e.g. +01:00)</label>
-  <input name="tz" placeholder="+01:00" value="+01:00">
+<!-- HUMAN DESIGN -->
+<section class="system-section">
+  <h2 class="hd">Human Design Gates</h2>
+  <div class="card card-hd">
+    <div class="card-label">Activated Gates · Tropical Zodiac</div>
+    <div class="gate-grid"><div class="gate-chip"><span class="gate-num">Gate 36</span><span class="gate-line">.6</span></div><div class="gate-chip"><span class="gate-num">Gate 62</span><span class="gate-line">.1</span></div><div class="gate-chip"><span class="gate-num">Gate 33</span><span class="gate-line">.1</span></div><div class="gate-chip"><span class="gate-num">Gate 34</span><span class="gate-line">.6</span></div><div class="gate-chip"><span class="gate-num">Gate 10</span><span class="gate-line">.6</span></div><div class="gate-chip"><span class="gate-num">Gate 32</span><span class="gate-line">.6</span></div><div class="gate-chip"><span class="gate-num">Gate 42</span><span class="gate-line">.6</span></div><div class="gate-chip"><span class="gate-num">Gate 31</span><span class="gate-line">.3</span></div><div class="gate-chip"><span class="gate-num">Gate 30</span><span class="gate-line">.1</span></div><div class="gate-chip"><span class="gate-num">Gate 21</span><span class="gate-line">.6</span></div><div class="gate-chip"><span class="gate-num">Gate 38</span><span class="gate-line">.2</span></div><div class="gate-chip"><span class="gate-num">Gate 9</span><span class="gate-line">.1</span></div><div class="gate-chip"><span class="gate-num">Gate 41</span><span class="gate-line">.1</span></div></div>
+  </div>
+</section>
 
-  <button type="submit">GENERATE PORTAL</button>
-</form>
+<!-- NUMEROLOGY -->
+<section class="system-section">
+  <h2 class="num">Numerology</h2>
+  <div class="num-grid"><div class="num-card"><div class="num-value">11</div><div class="num-label">Life Path</div><div class="num-desc">The Master Intuitive — illumination, spiritual messenger, inspired vis...</div></div><div class="num-card"><div class="num-value">6</div><div class="num-label">Destiny</div><div class="num-desc">The Nurturer — responsible, loving, harmonious, healer. You serve thro...</div></div><div class="num-card"><div class="num-value">0</div><div class="num-label">Soul Urge</div><div class="num-desc">...</div></div><div class="num-card"><div class="num-value">6</div><div class="num-label">Personality</div><div class="num-desc">The Nurturer — responsible, loving, harmonious, healer. You serve thro...</div></div><div class="num-card"><div class="num-value">8</div><div class="num-label">Maturity</div><div class="num-desc">The Powerhouse — ambitious, authoritative, abundant, material mastery....</div></div><div class="num-card"><div class="num-value">4</div><div class="num-label">Balance</div><div class="num-desc">The Builder — practical, disciplined, stable, hardworking. You build l...</div></div></div>
+  
+</section>
 
-<div class="footer">
-  Astrology · Human Design · Numerology · Chinese Zodiac<br>
-  Cosmos Engine · MIT · NASA JPL Ephemeris
+<!-- CHINESE ZODIAC -->
+<section class="system-section">
+  <h2 class="cz">Chinese Zodiac</h2>
+  <div class="cz-hero">
+    <div class="cz-animal-name">丑 Ox</div>
+    <div class="cz-element-tag">Earth</div>
+    <p style="font-size:11px; color:var(--text-dim); margin-top:10px; max-width:400px; margin-left:auto; margin-right:auto;">Diligent, dependable, strong, determined. Patience and hard work define you.</p>
+  </div>
+  <div class="card card-cz">
+    <div class="card-label">Four Pillars of Destiny</div>
+    <div class="pillar-row"><div class="pillar-cell"><div class="p-label">year</div><div class="p-stem">DingOx</div><div class="p-elem">Fire/Earth</div></div><div class="pillar-cell"><div class="p-label">month</div><div class="p-stem">GengTiger</div><div class="p-elem">Metal/Wood</div></div><div class="pillar-cell"><div class="p-label">day</div><div class="p-stem">WuHorse</div><div class="p-elem">Earth/Fire</div></div><div class="pillar-cell"><div class="p-label">hour</div><div class="p-stem">GuiSnake</div><div class="p-elem">Water/Fire</div></div></div>
+    <p style="font-size:10px; color:var(--text-dim); margin-top:12px; text-align:center;">
+      Day Master: <strong style="color:var(--amber);">Wu</strong> (Earth Yang)
+    </p>
+  </div>
+  <div class="card card-cz">
+    <div class="card-label">Element Balance</div>
+    <div class="element-bars"><div class="elem-bar"><span class="e-name">Wood</span><span class="e-fill" style="width:12.5%"></span><span class="e-count">1</span></div><div class="elem-bar"><span class="e-name">Fire</span><span class="e-fill" style="width:37.5%"></span><span class="e-count">3</span></div><div class="elem-bar"><span class="e-name">Earth</span><span class="e-fill" style="width:25.0%"></span><span class="e-count">2</span></div><div class="elem-bar"><span class="e-name">Metal</span><span class="e-fill" style="width:12.5%"></span><span class="e-count">1</span></div><div class="elem-bar"><span class="e-name">Water</span><span class="e-fill" style="width:12.5%"></span><span class="e-count">1</span></div></div>
+    <p style="font-size:10px; color:var(--text-dim); margin-top:10px;">
+      Lucky elements: <strong style="color:var(--amber);">Wood, Metal, Water</strong>
+    </p>
+  </div>
+</section>
+
+<footer class="portal-footer">
+  Generated by POLARIS Portal · Cosmos Engine (MIT)<br>
+  NASA JPL DE421 Ephemeris · Skyfield · Swiss Ephemeris-verified accuracy<br>
+  Pisces 0° · Cancer 28° · Gemini 18° ASC · Life Path 11
+</footer>
+
 </div>
-</div>
-<div class="pulse-ring"></div>
 </body>
 </html>
