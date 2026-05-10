@@ -1,2 +1,4 @@
+fastapi>=0.110
+uvicorn>=0.27
 skyfield>=1.48
 numpy>=1.20
