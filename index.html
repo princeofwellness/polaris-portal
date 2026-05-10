@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLARIS Portal</title>
+<style>
+:root {
+  --void: #050812; --stone: #0a0e1a; --gold: #D4A85A;
+  --ink: rgba(250,245,230,0.93); --ink-muted: rgba(240,230,210,0.48);
+  --hairline: rgba(255,255,240,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--void); color: var(--ink);
+  font-family: Georgia, 'Times New Roman', serif;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+}
+.container { max-width: 500px; width: 100%; padding: 40px 24px; }
+.header { text-align:center; margin-bottom: 48px; }
+.sigil { font-size: 48px; color: var(--gold); letter-spacing: 8px; margin-bottom: 12px; }
+.header h1 { font-size: 22px; font-weight: 300; letter-spacing: 4px; margin-bottom: 6px; }
+.header p { font-size: 12px; color: var(--ink-muted); letter-spacing: 1px; }
+
+form { display:flex; flex-direction:column; gap:14px; }
+label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--ink-muted); }
+input, select {
+  padding: 12px 16px; background: var(--stone); border: 1px solid var(--hairline);
+  color: var(--ink); font-size: 15px; font-family: Georgia, serif;
+  border-radius: 2px; outline: none; transition: border-color 0.2s;
+}
+input:focus { border-color: var(--gold); }
+.row { display:flex; gap:10px; }
+.row input { flex:1; }
+button {
+  padding: 14px; background: var(--gold); color: var(--void);
+  border: none; font-size: 14px; font-weight: 500; letter-spacing: 3px;
+  text-transform: uppercase; cursor: pointer; border-radius: 2px;
+  font-family: Georgia, serif; margin-top: 10px; transition: opacity 0.2s;
+}
+button:hover { opacity: 0.9; }
+.footer { text-align:center; margin-top: 32px; font-size: 10px; color: rgba(240,230,210,0.15); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="container">
+<header class="header">
+  <div class="sigil">✧</div>
+  <h1>POLARIS Portal</h1>
+  <p>Four ancient systems. One living mirror.</p>
+</header>
+<form method="POST" action="/generate">
+  <label>Full Birth Name</label>
+  <input name="name" placeholder="Your full birth name" required>
+  <label>Birth Date</label>
+  <input name="date" type="date" required>
+  <label>Birth Time</label>
+  <input name="time" type="time" required>
+  <div class="row">
+    <div style="flex:1">
+      <label>Latitude</label>
+      <input name="lat" placeholder="48.1486" value="48.1486">
+    </div>
+    <div style="flex:1">
+      <label>Longitude</label>
+      <input name="lon" placeholder="17.1077" value="17.1077">
+    </div>
+  </div>
+  <label>Timezone (offset from UTC, e.g. +01:00)</label>
+  <input name="tz" placeholder="+01:00" value="+01:00">
+  <button type="submit">GENERATE PORTAL</button>
+</form>
+<div class="footer">Astrology · Human Design · Numerology · Chinese Zodiac</div>
+</div>
+</body>
+</html>
