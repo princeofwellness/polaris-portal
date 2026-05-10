@@ -269,12 +269,24 @@ def build_portal(name: str, birth_dt: str, lat: float, lon: float) -> str:
         60: "Limitation as doorway. Acceptance.", 5: "Fixed rhythms. Patience.",
         61: "Inner truth. Knowing the unknowable.",
     }
-    gates_html = ""
+    # === HD GATES (sorted by zodiacal degree) ===
+    # Build list of (planet, gate, line, longitude) tuples, sort by longitude
+    gate_entries = []
     for pn in planet_order + ["CHIRON","NORTH_NODE","SOUTH_NODE"]:
         g = a.get("hd_gates", {}).get(pn, {})
         if g:
+            p = a["planets"].get(pn, {})
+            lon = p.get("longitude", 0)
             gm = gate_meanings.get(g["gate"], "")
-            gates_html += f'<div class="gate-chip"><span class="gate-num">Gate {g["gate"]}</span><span class="gate-line">.{g["line"]}</span><span class="gate-planet">{pn}</span><span class="gate-meaning">{gm}</span></div>'
+            gate_entries.append((pn, g["gate"], g["line"], lon, gm))
+    
+    # Sort by zodiacal longitude (0° = Gate 41, Aries)
+    gate_entries.sort(key=lambda x: x[3])
+    
+    gates_html = ""
+    for pn, gate_num, gate_line, lon, gm in gate_entries:
+        sign = _sign_name(lon)
+        gates_html += f'<div class="gate-chip"><span class="gate-num">Gate {gate_num}</span><span class="gate-line">.{gate_line}</span><span class="gate-planet">{pn}</span><span class="gate-sign">{sign}</span><span class="gate-meaning">{gm}</span></div>'
     
     # === NUMEROLOGY ===
     nc = n["core"]
