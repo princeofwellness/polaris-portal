@@ -13,24 +13,22 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 EPHEMERIS_PATH = "/tmp/de421.bsp"
 
 def ensure_ephemeris():
-    """Download JPL ephemeris if not present."""
-    if os.path.exists(EPHEMERIS_PATH):
-        return EPHEMERIS_PATH
+    """Find the JPL ephemeris file."""
+    # Check bundled location first (included in Vercel deployment)
+    bundled = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "de421.bsp")
+    if os.path.exists(bundled):
+        return bundled
     
-    # Try to download a minimal ephemeris
-    try:
-        import urllib.request
-        url = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de421.bsp"
-        urllib.request.urlretrieve(url, EPHEMERIS_PATH)
-    except:
-        pass
+    # Check /tmp 
+    if os.path.exists("/tmp/de421.bsp"):
+        return "/tmp/de421.bsp"
     
-    # Fallback: check common locations
-    for path in ["/tmp/hd-research/de421.bsp", "./de421.bsp", "../de421.bsp"]:
+    # Check common paths
+    for path in ["/tmp/hd-research/de421.bsp", "./de421.bsp"]:
         if os.path.exists(path):
             return path
     
-    return EPHEMERIS_PATH
+    return bundled  # Will fail with clear error if not found
 
 
 class handler(BaseHTTPRequestHandler):
