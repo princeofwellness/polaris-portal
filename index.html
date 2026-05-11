@@ -3,113 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POLARIS — Generate Your Portal</title>
+<title>POLARIS — Know Thyself</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap');
 :root {
-  --void:#05050a; --abyss:#080812; --surface:rgba(255,255,255,0.02);
-  --border:rgba(255,255,255,0.06); --text:#e0e0ec; --text-dim:#6a6a80;
-  --cyan:#00e5ff; --magenta:#ff2d95; --lime:#76ff03; --amber:#ff9100;
+  --void: #030308;
+  --cyan: #00e5ff; --magenta: #ff2d95; --lime: #76ff03; --amber: #ff9100;
+  --violet: #b388ff; --gold: #ffd54f;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
+
 body {
-  background: var(--void); color: var(--text);
-  font-family: 'Space Grotesk', sans-serif;
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  overflow-x: hidden;
+  background: var(--void);
+  color: #e8e8f0;
+  font-family: 'Inter', -apple-system, sans-serif;
+  min-height: 100vh; overflow-x: hidden;
+  display: flex; align-items: center; justify-content: center;
 }
-body::before {
-  content:''; position:fixed; top:-50%;left:-50%; width:200%;height:200%;
-  background:
-    radial-gradient(circle at 20% 80%, rgba(0,229,255,0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,45,149,0.03) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(118,255,3,0.02) 0%, transparent 60%);
-  pointer-events: none; z-index:0;
-}
-.container { max-width:520px; width:100%; padding:50px 24px; position:relative; z-index:1; }
-.header { text-align:center; margin-bottom:40px; }
-.glyph {
-  font-size:52px; letter-spacing:12px; margin-bottom:14px;
-  background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--lime), var(--amber));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  animation: hueSpin 8s ease infinite;
-}
-@keyframes hueSpin { 0%,100%{filter:hue-rotate(0deg)} 50%{filter:hue-rotate(45deg)} }
-.header h1 { font-size:22px; font-weight:300; letter-spacing:8px; text-transform:uppercase; margin-bottom:8px; }
-.header p { font-size:11px; color:var(--text-dim); letter-spacing:2px; }
 
-.system-dots { display:flex; justify-content:center; gap:8px; margin:20px 0 32px; }
-.dot { width:6px;height:6px;border-radius:50%; }
-.dot:nth-child(1){background:var(--cyan)} .dot:nth-child(2){background:var(--magenta)} .dot:nth-child(3){background:var(--lime)} .dot:nth-child(4){background:var(--amber)}
-
-form { display:flex; flex-direction:column; gap:13px; }
-label { font-size:9px; text-transform:uppercase; letter-spacing:3px; color:var(--text-dim); font-weight:500; }
-input {
-  padding:14px 16px; background:var(--abyss); border:1px solid var(--border);
-  color:var(--text); font-size:14px; font-family:'Space Grotesk',sans-serif;
-  outline:none; transition:all 0.25s;
+/* ANIMATED GRADIENT ORB */
+.gradient-orb {
+  position: fixed; width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.15) 0%, rgba(136,58,234,0.1) 40%, rgba(255,45,149,0.08) 70%, transparent 100%);
+  filter: blur(60px);
+  animation: orbFloat 12s ease-in-out infinite, orbPulse 6s ease-in-out infinite;
+  pointer-events: none; z-index: 0;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
 }
-input:focus { border-color:var(--cyan); box-shadow:0 0 0 1px rgba(0,229,255,0.15); }
-.row { display:flex; gap:10px; } .row input { flex:1; }
+.gradient-orb.second {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,145,0,0.12) 0%, rgba(118,255,3,0.08) 50%, transparent 100%);
+  animation: orbFloat 15s ease-in-out infinite reverse, orbPulse 8s ease-in-out infinite;
+}
+@keyframes orbFloat {
+  0%,100% { transform: translate(-50%,-50%) translate(0,0); }
+  25% { transform: translate(-50%,-50%) translate(80px,-40px); }
+  50% { transform: translate(-50%,-50%) translate(-40px,60px); }
+  75% { transform: translate(-50%,-50%) translate(-60px,-30px); }
+}
+@keyframes orbPulse {
+  0%,100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* FLOATING PARTICLES */
+.particles {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events: none; z-index: 0;
+}
+.particle {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: #fff;
+  animation: particleFloat linear infinite;
+  opacity: 0;
+}
+@keyframes particleFloat {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.2; }
+  100% { transform: translateY(-100vh) translateX(40px); opacity: 0; }
+}
+
+/* GRID BACKGROUND */
+.grid-bg {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 70%);
+}
+
+/* MAIN CONTAINER */
+.container {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 480px; padding: 40px 24px;
+}
+
+/* HEADER */
+.header {
+  text-align: center; margin-bottom: 36px;
+}
+.glyph-ring {
+  width: 80px; height: 80px; margin: 0 auto 20px;
+  border-radius: 50%; position: relative;
+  background: conic-gradient(from 0deg, var(--cyan), var(--magenta), var(--lime), var(--amber), var(--cyan));
+  animation: ringSpin 8s linear infinite;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 60px rgba(0,229,255,0.2), 0 0 120px rgba(255,45,149,0.1);
+}
+.glyph-ring::after {
+  content: '◈';
+  font-size: 28px; color: #fff;
+  background: var(--void); width: 62px; height: 62px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+@keyframes ringSpin {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+.header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px; font-weight: 300; letter-spacing: 8px;
+  text-transform: uppercase; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--lime));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header .tagline {
+  font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 4px;
+  font-weight: 300; text-transform: uppercase;
+}
+
+/* GLASS CARD */
+.glass-card {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 32px 28px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  position: relative; overflow: hidden;
+}
+.glass-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+
+/* FORM */
+form { display: flex; flex-direction: column; gap: 14px; }
+.input-group { position: relative; }
+.input-group label {
+  display: block; font-size: 9px; text-transform: uppercase;
+  letter-spacing: 3px; color: rgba(255,255,255,0.35); margin-bottom: 6px;
+  font-weight: 500;
+}
+.input-group input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; color: #e8e8f0;
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  outline: none; transition: all 0.3s;
+}
+.input-group input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0,229,255,0.15), inset 0 0 20px rgba(0,229,255,0.03);
+  background: rgba(0,229,255,0.04);
+}
+.input-group input::placeholder { color: rgba(255,255,255,0.15); }
+
+.row { display: flex; gap: 10px; }
+.row .input-group { flex: 1; }
+
+/* BUTTON */
 button {
-  padding:16px; margin-top:12px; background:transparent; border:2px solid var(--cyan);
-  color:var(--cyan); font-size:13px; font-weight:500; letter-spacing:4px;
-  text-transform:uppercase; cursor:pointer; font-family:'Space Grotesk',sans-serif;
-  transition:all 0.3s; position:relative; overflow:hidden;
+  width: 100%; padding: 16px; margin-top: 8px;
+  background: linear-gradient(135deg, var(--cyan), var(--magenta));
+  border: none; border-radius: 12px;
+  color: #fff; font-size: 14px; font-weight: 500;
+  letter-spacing: 4px; text-transform: uppercase;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  position: relative; overflow: hidden;
+  transition: all 0.4s;
+  box-shadow: 0 4px 24px rgba(0,229,255,0.2);
 }
-button:hover { background:var(--cyan); color:var(--void); box-shadow:0 0 30px rgba(0,229,255,0.25); }
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(255,45,149,0.3);
+  background: linear-gradient(135deg, var(--magenta), var(--cyan));
+}
+button::after {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+button:hover::after { left: 100%; }
 
-.demo-link { text-align:center; margin-top:24px; font-size:10px; color:var(--text-dim); }
-.demo-link a { color:var(--magenta); text-decoration:none; }
-.footer { text-align:center; margin-top:36px; font-size:9px; color:rgba(255,255,255,0.12); letter-spacing:2px; line-height:2; }
+/* SYSTEM ICONS ROW */
+.system-icons {
+  display: flex; justify-content: center; gap: 20px; margin-top: 24px;
+}
+.sys-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 300; font-family: 'Cormorant Garamond', serif;
+}
+.sys-icon.astro { background: rgba(0,229,255,0.1); color: var(--cyan); border: 1px solid rgba(0,229,255,0.2); }
+.sys-icon.hd { background: rgba(179,136,255,0.1); color: var(--violet); border: 1px solid rgba(179,136,255,0.2); }
+.sys-icon.num { background: rgba(118,255,3,0.08); color: var(--lime); border: 1px solid rgba(118,255,3,0.2); }
+.sys-icon.cz { background: rgba(255,145,0,0.1); color: var(--amber); border: 1px solid rgba(255,145,0,0.2); }
+
+/* DEMO LINK */
+.demo-link {
+  text-align: center; margin-top: 20px;
+  font-size: 11px; color: rgba(255,255,255,0.25);
+}
+.demo-link a {
+  color: rgba(255,255,255,0.5); text-decoration: none;
+  transition: color 0.3s;
+}
+.demo-link a:hover { color: var(--cyan); }
+
+/* MOBILE */
+@media (max-width: 500px) {
+  .container { padding: 30px 16px; }
+  .header h1 { font-size: 28px; letter-spacing: 5px; }
+  .glyph-ring { width: 60px; height: 60px; }
+  .glyph-ring::after { width: 46px; height: 46px; font-size: 22px; }
+  .glass-card { padding: 24px 18px; border-radius: 12px; }
+  button { padding: 14px; font-size: 12px; }
+}
 </style>
 </head>
 <body>
+
+<!-- Gradient orbs -->
+<div class="gradient-orb"></div>
+<div class="gradient-orb second"></div>
+
+<!-- Grid overlay -->
+<div class="grid-bg"></div>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
 <div class="container">
-<header class="header">
-  <div class="glyph">◈</div>
-  <h1>POLARIS</h1>
-  <p>FOUR ANCIENT SYSTEMS · ONE LIVING MIRROR</p>
-  <div class="system-dots">
-    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-  </div>
-</header>
+  <header class="header">
+    <div class="glyph-ring"></div>
+    <h1>POLARIS</h1>
+    <p class="tagline">Four ancient systems · One living mirror</p>
+  </header>
 
-<form method="POST" action="/generate">
-  <label>Full Birth Name</label>
-  <input name="name" placeholder="Your full birth name" required autofocus>
+  <div class="glass-card">
+    <form method="POST" action="/generate">
+      <div class="input-group">
+        <label>Full Birth Name</label>
+        <input name="name" placeholder="Enter your full birth name" required autofocus>
+      </div>
 
-  <label>Birth Date</label>
-  <input name="date" type="date" required>
+      <div class="input-group">
+        <label>Birth Date</label>
+        <input name="date" type="date" required>
+      </div>
 
-  <label>Birth Time</label>
-  <input name="time" type="time" required>
+      <div class="input-group">
+        <label>Birth Time</label>
+        <input name="time" type="time" required>
+      </div>
 
-  <div class="row">
-    <div style="flex:1">
-      <label>Latitude</label>
-      <input name="lat" placeholder="48.1486" value="48.1486">
+      <div class="row">
+        <div class="input-group">
+          <label>Latitude</label>
+          <input name="lat" placeholder="48.1486" value="48.1486">
+        </div>
+        <div class="input-group">
+          <label>Longitude</label>
+          <input name="lon" placeholder="17.1077" value="17.1077">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Timezone (UTC offset)</label>
+        <input name="tz" placeholder="+01:00" value="+01:00">
+      </div>
+
+      <button type="submit">Enter the Portal</button>
+    </form>
+
+    <div class="system-icons">
+      <div class="sys-icon astro">☉</div>
+      <div class="sys-icon hd">◈</div>
+      <div class="sys-icon num">∑</div>
+      <div class="sys-icon cz">子</div>
     </div>
-    <div style="flex:1">
-      <label>Longitude</label>
-      <input name="lon" placeholder="17.1077" value="17.1077">
-    </div>
   </div>
 
-  <label>Timezone (UTC offset, e.g. +01:00)</label>
-  <input name="tz" placeholder="+01:00" value="+01:00">
-
-  <button type="submit">GENERATE PORTAL</button>
-</form>
-
-<div class="demo-link">
-  <a href="/demo">View Dr.T's Portal →</a>
+  <div class="demo-link">
+    <a href="/generate?name=Dr.T&date=1997-02-19&time=10:09&lat=48.1486&lon=17.1077&tz=%2B01:00">View Dr.T's Portal →</a>
+  </div>
 </div>
 
-<div class="footer">
-  Astrology · Human Design · Numerology · Chinese Zodiac<br>
-  Cosmos Engine · MIT · NASA JPL Ephemeris
-</div>
-</div>
+<script>
+// Generate floating particles
+const container = document.getElementById('particles');
+const colors = ['#00e5ff','#ff2d95','#76ff03','#ff9100','#b388ff','#ffd54f','#fff'];
+for (let i = 0; i < 60; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random()*100+'%';
+  p.style.top = Math.random()*100+'%';
+  p.style.width = (Math.random()*3+1)+'px';
+  p.style.height = p.style.width;
+  p.style.background = colors[Math.floor(Math.random()*colors.length)];
+  p.style.animationDuration = (Math.random()*15+10)+'s';
+  p.style.animationDelay = Math.random()*15+'s';
+  container.appendChild(p);
+}
+</script>
+
 </body>
 </html>
