@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLARIS — Know Your Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08080f;
+  --surface: rgba(255,255,255,0.02);
+  --text: #d4d2cc;
+  --text-dim: rgba(255,255,255,0.38);
+  --text-subtle: rgba(255,255,255,0.14);
+  --accent: #d4a058;
+  --accent-hover: #e0b468;
+  --border: rgba(255,255,255,0.06);
+  --shadow-ring: 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+}
+
+[data-theme="light"] {
+  --bg: #faf8f4;
+  --surface: #fff;
+  --text: #1a1a22;
+  --text-dim: rgba(0,0,0,0.40);
+  --text-subtle: rgba(0,0,0,0.14);
+  --accent: #a0721a;
+  --accent-hover: #8a5e14;
+  --border: rgba(0,0,0,0.07);
+  --shadow-ring: 0 0 0 1px rgba(0,0,0,0.06);
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 400; line-height: 1.6;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.4s, color 0.4s;
+}
+
+.theme-toggle {
+  position: fixed; top: 28px; right: 28px; z-index: 10;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; cursor: pointer; font-size: 15px;
+  background: var(--surface); color: var(--text-dim);
+  box-shadow: var(--shadow-ring);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s;
+}
+.theme-toggle:hover { color: var(--accent); }
+
+.container {
+  width: 100%; max-width: 420px; padding: 56px 24px 72px;
+}
+
+header { text-align: center; margin-bottom: 40px; }
+.sigil {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px; font-weight: 300; line-height: 1;
+  color: var(--accent); margin-bottom: 20px;
+}
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.tagline {
+  font-size: 13px; color: var(--text-dim); line-height: 1.7;
+  max-width: 320px; margin: 0 auto;
+}
+.systems-row {
+  margin-top: 22px; display: flex; justify-content: center; gap: 20px;
+  font-size: 9px; color: var(--text-subtle); letter-spacing: 2px;
+  text-transform: uppercase; font-weight: 500;
+}
+
+/* Vercel-style shadow-as-border card */
+.card {
+  background: var(--surface); border-radius: 10px;
+  box-shadow: var(--shadow-ring), var(--shadow-card);
+  padding: 28px 24px;
+}
+
+form { display: flex; flex-direction: column; gap: 18px; }
+
+.field-group { position: relative; }
+.field-group label {
+  display: block; font-size: 9px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--text-dim); margin-bottom: 6px;
+  transition: color 0.2s;
+}
+.field-group:focus-within label { color: var(--accent); }
+
+.field-group input {
+  width: 100%; padding: 11px 14px;
+  background: var(--bg); border: none;
+  box-shadow: var(--shadow-ring);
+  border-radius: 6px; color: var(--text);
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  outline: none; transition: all 0.2s;
+}
+.field-group input:focus {
+  box-shadow: 0 0 0 1px var(--accent), 0 0 0 3px rgba(212,160,88,0.12);
+}
+.field-group input::placeholder { color: var(--text-subtle); }
+
+.row { display: flex; gap: 12px; }
+.row .field-group { flex: 1; }
+
+.city-hint {
+  font-size: 10px; color: var(--accent); margin-top: -10px; margin-bottom: -4px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.city-hint.show { opacity: 1; }
+
+/* Apple-style pill button */
+button {
+  width: 100%; padding: 13px; margin-top: 8px;
+  background: var(--accent); border: none; border-radius: 980px;
+  color: #fff; font-size: 12px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+}
+button:hover { background: var(--accent-hover); }
+button:active { transform: scale(0.98); }
+
+.footer {
+  text-align: center; margin-top: 28px;
+  font-size: 10px; color: var(--text-subtle); letter-spacing: 0.5px;
+}
+
+.status {
+  text-align: center; font-size: 10px; color: var(--accent);
+  min-height: 16px; margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .container { padding: 36px 16px; }
+  h1 { font-size: 22px; letter-spacing: 2px; }
+  .card { padding: 22px 18px; }
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="theme-btn" title="Toggle theme">☀</button>
+
+<div class="container">
+
+<header>
+  <div class="sigil">◈</div>
+  <h1>POLARIS</h1>
+  <p class="tagline">
+    Your birth data, read through four ancient systems. Not a horoscope — a map of the architecture you arrived with.
+  </p>
+  <div class="systems-row">
+    <span>Astrology</span>
+    <span>Human Design</span>
+    <span>Numerology</span>
+    <span>Chinese Zodiac</span>
+  </div>
+</header>
+
+<div class="card">
+  <form method="GET" action="/generate">
+    <input type="hidden" name="lat" id="lat" value="48.1486">
+    <input type="hidden" name="lon" id="lon" value="17.1077">
+    <input type="hidden" name="tz" id="tz" value="+01:00">
+
+    <div class="field-group">
+      <label>Full Birth Name</label>
+      <input name="name" placeholder="Your name as given at birth" required autofocus>
+    </div>
+
+    <div class="row">
+      <div class="field-group">
+        <label>Birth Date</label>
+        <input name="date" type="date" required>
+      </div>
+      <div class="field-group">
+        <label>Birth Time</label>
+        <input name="time" type="time" required>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Place of Birth</label>
+      <input name="city" id="city" placeholder="City name — Bratislava, London, Tokyo" required>
+      <div class="city-hint" id="hint"></div>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <button type="submit">Generate Portal</button>
+  </form>
+</div>
+
+<p class="footer">NASA JPL Ephemeris · Cosmos Engine (MIT) · Swiss Ephemeris-verified</p>
+
+</div>
+
+<script>
+const html = document.documentElement, btn = document.getElementById('theme-btn');
+const theme = localStorage.getItem('polaris-theme') || 'dark';
+html.setAttribute('data-theme', theme);
+btn.textContent = theme === 'dark' ? '☀' : '☾';
+btn.addEventListener('click', () => {
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  btn.textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('polaris-theme', next);
+});
+
+const off = -new Date().getTimezoneOffset();
+const h = Math.floor(Math.abs(off)/60), m = Math.abs(off)%60;
+document.getElementById('tz').value = `${off>=0?'+':'-'}${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+
+navigator.geolocation?.getCurrentPosition(p => {
+  document.getElementById('lat').value = p.coords.latitude.toFixed(4);
+  document.getElementById('lon').value = p.coords.longitude.toFixed(4);
+}, () => {});
+
+let t;
+document.getElementById('city').addEventListener('input', function() {
+  clearTimeout(t); const q = this.value.trim();
+  if (q.length < 3) return;
+  t = setTimeout(async () => {
+    const hint = document.getElementById('hint');
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=3`);
+      const d = await r.json();
+      if (d.length > 0) {
+        document.getElementById('lat').value = parseFloat(d[0].lat).toFixed(4);
+        document.getElementById('lon').value = parseFloat(d[0].lon).toFixed(4);
+        hint.textContent = d[0].display_name.split(',')[0].trim();
+        hint.classList.add('show');
+      }
+    } catch(e) {}
+  }, 500);
+});
+</script>
+</body>
+</html>
