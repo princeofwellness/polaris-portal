@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +7,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
+  --bg: #08080f;
+  --surface: #0f0f1a;
+  --border: rgba(255,255,255,0.07);
+  --text: #d4d4e0;
+  --text-dim: rgba(255,255,255,0.35);
+  --text-subtle: rgba(255,255,255,0.15);
+  --accent: #d4a058;
+  --accent-light: rgba(212,160,88,0.08);
+  --grad1: rgba(212,160,88,0.03);
+  --grad2: rgba(100,140,200,0.02);
+}
+
+[data-theme="light"] {
   --bg: #faf8f5;
   --surface: #fff;
-  --border: rgba(0,0,0,0.08);
+  --border: rgba(0,0,0,0.07);
   --text: #1a1a24;
-  --text-dim: rgba(0,0,0,0.45);
+  --text-dim: rgba(0,0,0,0.40);
+  --text-subtle: rgba(0,0,0,0.15);
   --accent: #b8860b;
   --accent-light: rgba(184,134,11,0.06);
+  --grad1: rgba(184,134,11,0.03);
+  --grad2: rgba(0,0,0,0.01);
 }
+
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
@@ -24,13 +41,23 @@ body {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(184,134,11,0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(0,0,0,0.02) 0%, transparent 40%);
+    radial-gradient(ellipse at 50% 0%, var(--grad1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, var(--grad2) 0%, transparent 40%);
+  transition: background 0.4s, color 0.4s;
 }
 
+/* Theme toggle */
+.theme-toggle {
+  position: fixed; top: 24px; right: 24px; z-index: 10;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: var(--text-dim); transition: all 0.3s;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
 .container {
-  width: 100%; max-width: 440px;
-  padding: 48px 24px;
+  width: 100%; max-width: 440px; padding: 48px 24px;
 }
 
 header {
@@ -40,12 +67,13 @@ header {
   font-family: 'Cormorant Garamond', serif;
   font-size: 48px; font-weight: 300; line-height: 1;
   color: var(--accent); margin-bottom: 20px;
+  transition: color 0.4s;
 }
 h1 {
   font-family: 'Cormorant Garamond', serif;
   font-size: 26px; font-weight: 300; letter-spacing: 4px;
   text-transform: uppercase; margin-bottom: 14px;
-  color: #1a1a24;
+  transition: color 0.4s;
 }
 .tagline {
   font-size: 13px; color: var(--text-dim);
@@ -53,7 +81,7 @@ h1 {
 }
 .systems-row {
   margin-top: 24px; display: flex; justify-content: center; gap: 24px;
-  font-size: 10px; color: rgba(0,0,0,0.2); letter-spacing: 1.5px;
+  font-size: 10px; color: var(--text-subtle); letter-spacing: 1.5px;
   text-transform: uppercase;
 }
 
@@ -62,7 +90,7 @@ form { display: flex; flex-direction: column; gap: 16px; }
 .field { position: relative; }
 .field label {
   display: block; font-size: 10px; text-transform: uppercase;
-  letter-spacing: 2px; color: rgba(0,0,0,0.3); margin-bottom: 6px;
+  letter-spacing: 2px; color: var(--text-dim); margin-bottom: 6px;
   font-weight: 500; transition: color 0.2s;
 }
 .field:focus-within label { color: var(--accent); }
@@ -78,13 +106,13 @@ form { display: flex; flex-direction: column; gap: 16px; }
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-light);
 }
-.field input::placeholder { color: rgba(0,0,0,0.2); }
+.field input::placeholder { color: var(--text-subtle); }
 
 .row { display: flex; gap: 12px; }
 .row .field { flex: 1; }
 
 .city-hint {
-  font-size: 10px; color: rgba(0,0,0,0.25); margin-top: -8px;
+  font-size: 10px; color: var(--text-dim); margin-top: -8px;
   margin-bottom: 4px; letter-spacing: 0.3px;
   display: none;
 }
@@ -98,37 +126,32 @@ button {
   cursor: pointer; font-family: 'Inter', sans-serif;
   transition: all 0.25s;
 }
-button:hover { background: #9a7209; }
+button:hover { opacity: 0.9; }
 button:active { transform: scale(0.98); }
-button.loading { opacity: 0.7; pointer-events: none; }
 
-.demo-link {
-  text-align: center; margin-top: 22px;
-  font-size: 11px; color: var(--text-dim);
-}
-.demo-link a { color: var(--accent); text-decoration: none; opacity: 0.6; transition: opacity 0.2s; }
-.demo-link a:hover { opacity: 1; }
-
-.footer-note {
-  text-align: center; margin-top: 32px;
-  font-size: 10px; color: rgba(0,0,0,0.15); letter-spacing: 0.5px;
-}
-
-/* Status message */
 .status {
   text-align: center; font-size: 11px; color: var(--accent);
-  margin-top: 12px; min-height: 16px; transition: opacity 0.3s;
+  margin-top: 8px; min-height: 16px;
+}
+
+.footer-note {
+  text-align: center; margin-top: 36px;
+  font-size: 10px; color: var(--text-subtle); letter-spacing: 0.5px;
 }
 
 @media (max-width: 480px) {
   .container { padding: 36px 18px; }
   h1 { font-size: 22px; letter-spacing: 3px; }
   .systems-row { gap: 16px; }
+  .theme-toggle { top: 16px; right: 16px; }
   button { padding: 14px; font-size: 12px; }
 }
 </style>
 </head>
 <body>
+
+<button class="theme-toggle" id="theme-btn" title="Toggle theme" aria-label="Toggle light/dark mode">☀</button>
+
 <div class="container">
 
 <header>
@@ -174,82 +197,76 @@ button.loading { opacity: 0.7; pointer-events: none; }
 
   <div id="status" class="status"></div>
 
-  <button type="submit" id="submit-btn">Generate Portal</button>
+  <button type="submit">Generate Portal</button>
 </form>
 
-<p class="demo-link">
-  <a href="/generate?name=Dr.T&date=1997-02-19&time=10:09&lat=48.1486&lon=17.1077&tz=%2B01:00">View Dr.T's portal →</a>
-</p>
-
 <p class="footer-note">
-  NASA JPL Ephemeris · Swiss Ephemeris-verified · Cosmos Engine (MIT)
+  NASA JPL Ephemeris · Cosmos Engine (MIT) · Swiss Ephemeris-verified
 </p>
 
 </div>
 
 <script>
-// Auto-detect timezone offset from browser
-const offset = -new Date().getTimezoneOffset();
-const tzHours = Math.floor(Math.abs(offset) / 60);
-const tzMins = Math.abs(offset) % 60;
-const sign = offset >= 0 ? '+' : '-';
-const tzStr = `${sign}${String(tzHours).padStart(2,'0')}:${String(tzMins).padStart(2,'0')}`;
-document.getElementById('tz-field').value = tzStr;
+// Theme toggle
+const html = document.documentElement;
+const btn = document.getElementById('theme-btn');
+const saved = localStorage.getItem('polaris-theme') || 'dark';
+html.setAttribute('data-theme', saved);
+btn.textContent = saved === 'dark' ? '☀' : '☾';
 
-// Try browser geolocation for lat/lon
+btn.addEventListener('click', () => {
+  const current = html.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  btn.textContent = next === 'dark' ? '☀' : '☾';
+  localStorage.setItem('polaris-theme', next);
+});
+
+// Timezone offset
+const offset = -new Date().getTimezoneOffset();
+const h = Math.floor(Math.abs(offset)/60), m = Math.abs(offset)%60;
+const sign = offset >= 0 ? '+' : '-';
+document.getElementById('tz-field').value = `${sign}${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+
+// Browser geolocation
 if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      document.getElementById('lat-field').value = pos.coords.latitude.toFixed(4);
-      document.getElementById('lon-field').value = pos.coords.longitude.toFixed(4);
-      document.getElementById('status').textContent = 'Location detected from your device';
-    },
-    () => {}
-  );
+  navigator.geolocation.getCurrentPosition(pos => {
+    document.getElementById('lat-field').value = pos.coords.latitude.toFixed(4);
+    document.getElementById('lon-field').value = pos.coords.longitude.toFixed(4);
+  }, () => {});
 }
 
-// Geocode city name when user types
-let geocodeTimer;
+// City geocoding
+let timer;
 document.getElementById('city-input').addEventListener('input', function() {
-  clearTimeout(geocodeTimer);
-  const query = this.value.trim();
-  if (query.length < 3) return;
-
-  geocodeTimer = setTimeout(async () => {
+  clearTimeout(timer);
+  const q = this.value.trim();
+  if (q.length < 3) return;
+  timer = setTimeout(async () => {
     const hint = document.getElementById('city-hint');
-    const status = document.getElementById('status');
     try {
-      const resp = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=3`
-      );
-      const data = await resp.json();
-      if (data.length > 0) {
-        const place = data[0];
-        document.getElementById('lat-field').value = parseFloat(place.lat).toFixed(4);
-        document.getElementById('lon-field').value = parseFloat(place.lon).toFixed(4);
-        hint.textContent = `Found: ${place.display_name.split(',')[0].trim()}`;
+      const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=3`);
+      const d = await r.json();
+      if (d.length > 0) {
+        document.getElementById('lat-field').value = parseFloat(d[0].lat).toFixed(4);
+        document.getElementById('lon-field').value = parseFloat(d[0].lon).toFixed(4);
+        hint.textContent = 'Found: ' + d[0].display_name.split(',')[0].trim();
         hint.classList.add('show');
-        status.textContent = '';
       } else {
-        hint.textContent = 'City not found — try a more specific name';
+        hint.textContent = 'Not found — try a more specific name';
         hint.classList.add('show');
       }
-    } catch(e) {
-      status.textContent = 'Geocoding unavailable — using default coordinates';
-    }
+    } catch(e) {}
   }, 600);
 });
 
-// Form submit - prevent if no location resolved
+// Prevent empty submits
 document.getElementById('portal-form').addEventListener('submit', function(e) {
-  const lat = document.getElementById('lat-field').value;
-  const lon = document.getElementById('lon-field').value;
-  if (!lat || !lon || lat === '48.1486') {
-    document.getElementById('status').textContent = 'Enter a valid city name for accurate results';
-    // Still allow submit — defaults work
+  const city = document.getElementById('city-input').value.trim();
+  if (city.length < 1) {
+    e.preventDefault();
+    document.getElementById('status').textContent = 'Please enter a city name';
   }
-  document.getElementById('submit-btn').classList.add('loading');
-  document.getElementById('submit-btn').textContent = 'Generating...';
 });
 </script>
 
