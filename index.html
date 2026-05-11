@@ -188,9 +188,13 @@ button.loading { opacity: 0.7; pointer-events: none; }
 </div>
 
 <script>
-// Auto-detect timezone from browser
-const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-document.getElementById('tz-field').value = tz;
+// Auto-detect timezone offset from browser
+const offset = -new Date().getTimezoneOffset();
+const tzHours = Math.floor(Math.abs(offset) / 60);
+const tzMins = Math.abs(offset) % 60;
+const sign = offset >= 0 ? '+' : '-';
+const tzStr = `${sign}${String(tzHours).padStart(2,'0')}:${String(tzMins).padStart(2,'0')}`;
+document.getElementById('tz-field').value = tzStr;
 
 // Try browser geolocation for lat/lon
 if (navigator.geolocation) {

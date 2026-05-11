@@ -51,6 +51,24 @@ class handler(BaseHTTPRequestHandler):
             lat = float(params.get("lat", ["48.1486"])[0])
             lon = float(params.get("lon", ["17.1077"])[0])
             tz = params.get("tz", ["+00:00"])[0]
+            
+            # Convert IANA timezone name to UTC offset if needed
+            if "/" in tz and not tz.startswith("+"):
+                try:
+                    from datetime import datetime, timezone as tz_mod, timedelta
+                    import time
+                    # Load timezone
+                    import zoneinfo
+                    tz_info = zoneinfo.ZoneInfo(tz)
+                    now = datetime.now(tz_info)
+                    offset_seconds = now.utcoffset().total_seconds()
+                    offset_hours = int(offset_seconds / 3600)
+                    offset_mins = int(abs(offset_seconds) % 3600 / 60)
+                    sign = "+" if offset_hours >= 0 else "-"
+                    tz = f"{sign}{abs(offset_hours):02d}:{offset_mins:02d}"
+                except:
+                    tz = "+00:00"
+            
             birth_dt = f"{date}T{time_str}:00{tz}"
 
             # Set ephemeris path
