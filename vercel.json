@@ -1,13 +1,7 @@
 {
-  "builds": [
-    {
-      "src": "api/generate.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    { "src": "/generate", "dest": "/api/generate.py" },
-    { "src": "/form", "dest": "/form.html" },
-    { "src": "/", "dest": "/form.html" }
+  "rewrites": [
+    { "source": "/generate", "destination": "/api/generate.py" },
+    { "source": "/demo", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/form.html" }
   ]
 }
