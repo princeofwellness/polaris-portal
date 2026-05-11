@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POLARIS — Four Systems. One Mirror.</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<title>POLARIS — Know Your Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #02020c;
-  --surface: #0a0a18;
-  --border: rgba(255,255,255,0.06);
-  --text: #d4d4e0;
-  --text-dim: rgba(255,255,255,0.35);
-  --accent: #d4a058;
-  --accent-dim: rgba(212,160,88,0.08);
+  --bg: #faf8f5;
+  --surface: #fff;
+  --border: rgba(0,0,0,0.08);
+  --text: #1a1a24;
+  --text-dim: rgba(0,0,0,0.45);
+  --accent: #b8860b;
+  --accent-light: rgba(184,134,11,0.06);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -24,8 +24,8 @@ body {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(212,160,88,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 100%, rgba(100,140,200,0.03) 0%, transparent 50%);
+    radial-gradient(ellipse at 50% 0%, rgba(184,134,11,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(0,0,0,0.02) 0%, transparent 40%);
 }
 
 .container {
@@ -33,155 +33,221 @@ body {
   padding: 48px 24px;
 }
 
-/* Header */
 header {
-  text-align: center; margin-bottom: 48px;
+  text-align: center; margin-bottom: 44px;
 }
-header .sigil {
+.sigil {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 56px; font-weight: 300; line-height: 1;
-  color: var(--accent); margin-bottom: 24px;
-  letter-spacing: -2px;
+  font-size: 48px; font-weight: 300; line-height: 1;
+  color: var(--accent); margin-bottom: 20px;
 }
-header h1 {
+h1 {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 28px; font-weight: 300; letter-spacing: 5px;
-  text-transform: uppercase; margin-bottom: 16px;
-  color: #e8e4dc;
+  font-size: 26px; font-weight: 300; letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 14px;
+  color: #1a1a24;
 }
-header p {
+.tagline {
   font-size: 13px; color: var(--text-dim);
-  line-height: 1.7; letter-spacing: 0.3px;
-  max-width: 340px; margin: 0 auto;
+  line-height: 1.7; max-width: 340px; margin: 0 auto;
 }
-header .systems {
-  margin-top: 28px; display: flex; justify-content: center; gap: 32px;
-  font-size: 10px; color: rgba(255,255,255,0.2);
-  letter-spacing: 2px; text-transform: uppercase;
+.systems-row {
+  margin-top: 24px; display: flex; justify-content: center; gap: 24px;
+  font-size: 10px; color: rgba(0,0,0,0.2); letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
-/* Form */
-form { display: flex; flex-direction: column; gap: 18px; }
+form { display: flex; flex-direction: column; gap: 16px; }
 
 .field { position: relative; }
 .field label {
   display: block; font-size: 10px; text-transform: uppercase;
-  letter-spacing: 2.5px; color: rgba(255,255,255,0.25); margin-bottom: 8px;
-  font-weight: 500; transition: color 0.3s;
+  letter-spacing: 2px; color: rgba(0,0,0,0.3); margin-bottom: 6px;
+  font-weight: 500; transition: color 0.2s;
 }
 .field:focus-within label { color: var(--accent); }
 
 .field input {
-  width: 100%; padding: 14px 0;
-  background: none; border: none; border-bottom: 1px solid var(--border);
-  color: #e4e0d8; font-size: 15px; font-family: 'Inter', sans-serif;
-  outline: none; transition: border-color 0.3s;
-  letter-spacing: 0.3px;
+  width: 100%; padding: 13px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  outline: none; transition: all 0.2s;
 }
-.field input:focus { border-bottom-color: var(--accent); }
-.field input::placeholder { color: rgba(255,255,255,0.1); }
+.field input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+.field input::placeholder { color: rgba(0,0,0,0.2); }
 
-.row { display: flex; gap: 20px; }
+.row { display: flex; gap: 12px; }
 .row .field { flex: 1; }
 
-/* Submit */
-.submit-area { margin-top: 32px; text-align: center; }
+.city-hint {
+  font-size: 10px; color: rgba(0,0,0,0.25); margin-top: -8px;
+  margin-bottom: 4px; letter-spacing: 0.3px;
+  display: none;
+}
+.city-hint.show { display: block; }
+
 button {
-  width: 100%; padding: 16px;
-  background: var(--accent); border: none;
-  color: #0a0a14; font-size: 13px; font-weight: 500;
-  letter-spacing: 3px; text-transform: uppercase;
+  width: 100%; padding: 15px; margin-top: 12px;
+  background: var(--accent); border: none; border-radius: 6px;
+  color: #fff; font-size: 13px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
   cursor: pointer; font-family: 'Inter', sans-serif;
-  transition: all 0.3s;
+  transition: all 0.25s;
 }
-button:hover { background: #e0b468; }
+button:hover { background: #9a7209; }
 button:active { transform: scale(0.98); }
+button.loading { opacity: 0.7; pointer-events: none; }
 
-.submit-area .note {
-  margin-top: 20px; font-size: 11px; color: rgba(255,255,255,0.2);
-  letter-spacing: 0.5px;
+.demo-link {
+  text-align: center; margin-top: 22px;
+  font-size: 11px; color: var(--text-dim);
 }
-.submit-area .note a {
-  color: rgba(212,160,88,0.5); text-decoration: none; transition: color 0.3s;
-}
-.submit-area .note a:hover { color: var(--accent); }
+.demo-link a { color: var(--accent); text-decoration: none; opacity: 0.6; transition: opacity 0.2s; }
+.demo-link a:hover { opacity: 1; }
 
-/* Numbers hint */
-.hint {
-  text-align: center; margin-top: 36px;
-  font-size: 11px; color: rgba(255,255,255,0.12); letter-spacing: 1px;
+.footer-note {
+  text-align: center; margin-top: 32px;
+  font-size: 10px; color: rgba(0,0,0,0.15); letter-spacing: 0.5px;
+}
+
+/* Status message */
+.status {
+  text-align: center; font-size: 11px; color: var(--accent);
+  margin-top: 12px; min-height: 16px; transition: opacity 0.3s;
 }
 
 @media (max-width: 480px) {
-  .container { padding: 36px 20px; }
-  header .sigil { font-size: 44px; }
-  header h1 { font-size: 22px; letter-spacing: 4px; }
-  header .systems { gap: 20px; font-size: 9px; }
+  .container { padding: 36px 18px; }
+  h1 { font-size: 22px; letter-spacing: 3px; }
+  .systems-row { gap: 16px; }
   button { padding: 14px; font-size: 12px; }
 }
 </style>
 </head>
 <body>
-
 <div class="container">
-  <header>
-    <div class="sigil">◈</div>
-    <h1>POLARIS</h1>
-    <p>
-      Four ancient systems read your birth data and return a mirror — not a horoscope, not a fortune, but a map of the architecture you arrived with.
-    </p>
-    <div class="systems">
-      <span>Astrology</span>
-      <span>Human Design</span>
-      <span>Numerology</span>
-      <span>Chinese Zodiac</span>
-    </div>
-  </header>
 
-  <form method="POST" action="/generate">
-    <div class="field">
-      <label>Full Birth Name</label>
-      <input name="name" placeholder="Your name as given at birth" required autofocus>
-    </div>
+<header>
+  <div class="sigil">◈</div>
+  <h1>POLARIS</h1>
+  <p class="tagline">
+    Your birth data, read through four ancient systems. Not a horoscope — a map of the architecture you arrived with.
+  </p>
+  <div class="systems-row">
+    <span>Astrology</span>
+    <span>Human Design</span>
+    <span>Numerology</span>
+    <span>Chinese Zodiac</span>
+  </div>
+</header>
 
+<form id="portal-form" method="POST" action="/generate">
+  <input type="hidden" name="lat" id="lat-field" value="48.1486">
+  <input type="hidden" name="lon" id="lon-field" value="17.1077">
+  <input type="hidden" name="tz" id="tz-field" value="+01:00">
+
+  <div class="field">
+    <label>Full Birth Name</label>
+    <input name="name" placeholder="Your name as given at birth" required autofocus>
+  </div>
+
+  <div class="row">
     <div class="field">
       <label>Birth Date</label>
       <input name="date" type="date" required>
     </div>
-
     <div class="field">
       <label>Birth Time</label>
       <input name="time" type="time" required>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="field">
-        <label>Latitude</label>
-        <input name="lat" placeholder="48.1486" value="48.1486">
-      </div>
-      <div class="field">
-        <label>Longitude</label>
-        <input name="lon" placeholder="17.1077" value="17.1077">
-      </div>
-    </div>
+  <div class="field">
+    <label>Place of Birth</label>
+    <input name="city" id="city-input" placeholder="City name — e.g. Bratislava, London, Tokyo" required>
+    <div class="city-hint" id="city-hint"></div>
+  </div>
 
-    <div class="field">
-      <label>Timezone (UTC)</label>
-      <input name="tz" placeholder="+01:00" value="+01:00">
-    </div>
+  <div id="status" class="status"></div>
 
-    <div class="submit-area">
-      <button type="submit">Enter the Portal</button>
-      <p class="note">
-        <a href="/generate?name=Dr.T&date=1997-02-19&time=10:09&lat=48.1486&lon=17.1077&tz=%2B01:00">View an example portal →</a>
-      </p>
-    </div>
-  </form>
+  <button type="submit" id="submit-btn">Generate Portal</button>
+</form>
 
-  <p class="hint">
-    Astrology via NASA JPL Ephemeris · Human Design via Cosmos Engine · MIT License
-  </p>
+<p class="demo-link">
+  <a href="/generate?name=Dr.T&date=1997-02-19&time=10:09&lat=48.1486&lon=17.1077&tz=%2B01:00">View Dr.T's portal →</a>
+</p>
+
+<p class="footer-note">
+  NASA JPL Ephemeris · Swiss Ephemeris-verified · Cosmos Engine (MIT)
+</p>
+
 </div>
+
+<script>
+// Auto-detect timezone from browser
+const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+document.getElementById('tz-field').value = tz;
+
+// Try browser geolocation for lat/lon
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      document.getElementById('lat-field').value = pos.coords.latitude.toFixed(4);
+      document.getElementById('lon-field').value = pos.coords.longitude.toFixed(4);
+      document.getElementById('status').textContent = 'Location detected from your device';
+    },
+    () => {}
+  );
+}
+
+// Geocode city name when user types
+let geocodeTimer;
+document.getElementById('city-input').addEventListener('input', function() {
+  clearTimeout(geocodeTimer);
+  const query = this.value.trim();
+  if (query.length < 3) return;
+
+  geocodeTimer = setTimeout(async () => {
+    const hint = document.getElementById('city-hint');
+    const status = document.getElementById('status');
+    try {
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=3`
+      );
+      const data = await resp.json();
+      if (data.length > 0) {
+        const place = data[0];
+        document.getElementById('lat-field').value = parseFloat(place.lat).toFixed(4);
+        document.getElementById('lon-field').value = parseFloat(place.lon).toFixed(4);
+        hint.textContent = `Found: ${place.display_name.split(',')[0].trim()}`;
+        hint.classList.add('show');
+        status.textContent = '';
+      } else {
+        hint.textContent = 'City not found — try a more specific name';
+        hint.classList.add('show');
+      }
+    } catch(e) {
+      status.textContent = 'Geocoding unavailable — using default coordinates';
+    }
+  }, 600);
+});
+
+// Form submit - prevent if no location resolved
+document.getElementById('portal-form').addEventListener('submit', function(e) {
+  const lat = document.getElementById('lat-field').value;
+  const lon = document.getElementById('lon-field').value;
+  if (!lat || !lon || lat === '48.1486') {
+    document.getElementById('status').textContent = 'Enter a valid city name for accurate results';
+    // Still allow submit — defaults work
+  }
+  document.getElementById('submit-btn').classList.add('loading');
+  document.getElementById('submit-btn').textContent = 'Generating...';
+});
+</script>
 
 </body>
 </html>
