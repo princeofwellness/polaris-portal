@@ -368,6 +368,13 @@ def build_portal(name: str, birth_dt: str, lat: float, lon: float) -> str:
     # Read template and substitute
     template = (ROOT / "portal_template.html").read_text()
     
+    # === CHINESE ZODIAC HERO ===
+    cz_hero = f"""<div class="cz-hero">
+      <div class="cz-name">{animal['chinese']} {animal['name']}</div>
+      <div class="cz-tag">{animal['element']}</div>
+      <p style="font-size:11px;color:var(--text-dim);margin-top:10px;max-width:400px;margin-left:auto;margin-right:auto;">{animal['traits']}</p>
+    </div>"""
+
     subs = {
         "{$NAME}": name,
         "{$SUBTITLE}": subtitle,
@@ -387,12 +394,15 @@ def build_portal(name: str, birth_dt: str, lat: float, lon: float) -> str:
         "{$NUM_CARDS}": num_cards,
         "{$LP_INTERP}": lp_interpretation,
         "{$KARMIC}": karmic_html,
-        "{$CZ_HERO}": cz_hero,
+        "{$ANIMAL_CH}": animal['chinese'],
+        "{$ANIMAL_NAME}": animal['name'],
+        "{$ANIMAL_ELEM}": animal['element'],
+        "{$ANIMAL_TRAITS}": animal['traits'],
         "{$PILLARS}": pillar_grid,
         "{$DAY_MASTER_BLOCK}": day_master_block,
         "{$ELEMENT_BARS}": element_bars,
         "{$LUCKY}": ", ".join(eb["lucky"]),
-        "{$CROSS_ELEMENTS_BLOCK}": f'<div class="card card-cz"><div class="card-label">Cross-System Element Analysis</div><div class="cross-element">{cross_elem}</div></div>' if cross_elem else "",
+        "{$CROSS_ELEMENTS_BLOCK}": f'<div class="card" style="margin-top:10px;"><div class="card-label">Cross-System Elements</div><p style="font-size:12px;color:var(--text-dim);line-height:1.7;">{cross_elem}</p></div>' if cross_elem else "",
     }
     
     html = template
