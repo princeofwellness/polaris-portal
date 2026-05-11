@@ -1,1 +1,13 @@
-{"version":2,"builds":[{"src":"index.html","use":"@vercel/static"}]}
+{
+  "builds": [
+    {
+      "src": "api/generate.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    { "src": "/generate", "dest": "/api/generate.py" },
+    { "src": "/form", "dest": "/form.html" },
+    { "src": "/", "dest": "/form.html" }
+  ]
+}
